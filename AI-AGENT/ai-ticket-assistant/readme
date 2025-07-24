@@ -1,0 +1,7 @@
+Bcrypt:-hashing password
+cors:- to connct backend and frondend
+dotenv:-to load env var
+express:- rputing lib
+mongoose:- orm for mongodb
+nodemailer:-to sent mail
+jwt

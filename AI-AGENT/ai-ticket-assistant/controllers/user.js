@@ -58,9 +58,43 @@ export const logout = async (req,res) =>{
         "Unauthorized"})
         jwt.verify(token,process.env.JWT_SECREAT,(err,
         decoded=>{
-            if(err) return res.status(401).json(error:
-                "unauthorized")}))
-                res.json({message:"Logout successful"} )
+            if(err) return res.status(401).json({error:
+                "unauthorized"}
+            )}))
+                res.json({message:"Logout successful"})
     }catch(error){
     }
 }
+
+export const updateUser =async(req,res)=>{
+    const{skills =[],role,email} =req.body
+    try{
+        if(req.user?.role !=="admin"){
+            return res.status(403).json({error:"Forbidden"})
+        }
+        const user=await User.findOne({emial})
+        if(!user) return res.status(401).json({error:"User not found"});
+
+        await User.updateOne(
+            {email},
+            {skills:skills.length ? skills :user.skills,role}
+        )
+        return res.json({message:"User updated succesfully"})  
+    }
+    catch(error){
+        res.status(500).json({error :"Login failed",details:error.message});
+    }
+};
+
+export const getUser =async(req,res)=>{
+    try {
+        if(req.user.role !== "admin"){
+            return res.status(403).json({error})
+        }
+        const users=await User.find().select("-password")
+            return res.json(users)
+    } catch (error) {
+        res.status(500)
+        .json({error:"Update failed", details:error.message});
+    }
+};
